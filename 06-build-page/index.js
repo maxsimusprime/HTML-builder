@@ -71,13 +71,13 @@ const replaceAsync = async (str, regex, asyncFn) => {
 }
 
 const insertTemplates = async (template, components, destFile) => {
-  const regexp = /[^\n]({{.+?}})/g;
+  const regexp = /{{(.+?)}}/g;
   try {
     await fsPromises
       .readFile(template)
       .then(content => content.toString())
       .then(content => replaceAsync(content, regexp, match => {
-        const componentName = match.substring(3, match.length - 2) + '.html';
+        const componentName = match.substring(2, match.length - 2) + '.html';
         const componentHtml = getHtml(path.join(components, componentName));
         return componentHtml;
       }))
